@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.env
+.pytest_cache/
+
+# Node
+node_modules/
+.next/
+out/
+npm-debug.log*
+
+# Data artifacts
+/data/generated/*
+!/data/generated/.gitkeep
+*.parquet
+*.db
+
+# IDE
+.vscode/
+.DS_Store
+
+# Build artifacts
+build/
+dist/
+*.so
+*.dylib
+*.o
