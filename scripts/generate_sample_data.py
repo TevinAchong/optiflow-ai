@@ -127,4 +127,33 @@ def make_production_forecast() -> pd.DataFrame:
             })
     return pd.DataFrame(rows)
 
+def make_lifting_schedule() -> pd.DataFrame:
+    rows = []
+    vessel_no = 1
 
+    # Loop through dates starting at index 7, and take every 9th index afterwards
+    for d in DATES[7::9]:
+        # Chooses two contracts at random to lift on a given day
+        chosen_contracts = random_number_generator.choice(
+            [c["contract_id"] for c in CONTRACTS],
+            size=2, replace=False
+        )
+        # For each of the randomly chosen contracts, specify the volumes
+        for contract_id in chosen_contracts:
+            rows.append({
+                "date" : d.date().isoformat(),
+                # 0: pad with leading zeroes
+                # 3: make it 3 digits wide
+                # d: format with integers
+                "vessel_name" : f"Vessel-{vessel_no:03d}" ,
+                "contract_id" : contract_id,
+                "volume_mmbtu" : int(random_number_generator.integers(130_000, 220_000)),
+                "jetty_id" : "JETTY-1"
+            })
+            vessel_no += 1
+        return pd.DataFrame(rows)
+
+def make_pricing_forecast() -> pd.DataFrame:
+    rows = []
+    for d in DATES:
+        seasonal = 1.5 * np.sin(2 * np.pi * d.dayofyear / 365)
